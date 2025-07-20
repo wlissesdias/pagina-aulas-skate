@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="shortcut icon" href="./img/skate (1).png" type="image/x-icon">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Beatriz Gavelak</title>
+
+
+    <style>
+        /* Estilizando a barra de menu */
+        .menu {
+            background-color: #ca5c03;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            /*position: fixed;*/
+            top: 0;
+            left: 0px;
+            width: 100%;
+            color: white;
+        }
+
+        .menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        .menu li {
+            margin-right: 20px;
+        }
+
+        .menu a {
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+        }
+
+
+        .menu button {
+            background-color: #f2600c;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 20px;
+            margin-right: 60px;
+
+            transition: calc(0.3s), transform 0.3s, box-shadow 0.3s;
+        }
+
+        .menu button:hover {
+            background-color: #383737ad;
+            border: solid 1px #ffff;
+
+        }
+
+        /* Estilizando o pop-up */
+        .popup {
+            display: none;
+            position: absolute;
+            top: 80px;
+            right: 20px;
+            /*background-color: rgb(36, 35, 35);*/
+            background: linear-gradient(120deg, rgb(17, 17, 17), rgb(255, 253, 253), rgb(255, 255, 255), 255), rgb(31, 31, 31);
+            padding: 40px;
+            box-shadow: 0px 4px 10px rgb(0, 0, 0);
+            border-radius: 40px;
+            width: 300px;
+            max-height: 600px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+
+        .popup .amigo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .popup img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+            border: 2px solid #6c6969;
+            cursor: pointer;
+        }
+
+        .popup a {
+            text-decoration: none;
+            color: #676666;
+            font-size: 18px;
+        }
+
+        /* Efeito ao passar o mouse */
+        .popup a:hover {
+            color: #d14d00;
+            /* Muda a cor */
+            transform: scale(1.2);
+            /* Aumenta o tamanho */
+        }
+
+        .popup::-webkit-scrollbar {
+            width: 10px;
+            /* Largura da barra de rolagem */
+        }
+
+        .popup::-webkit-scrollbar-track {
+            background: rgb(0, 0, 0);
+            /* Cor do fundo da barra de rolagem */
+            border-radius: 10px;
+        }
+
+        .popup::-webkit-scrollbar-thumb {
+            background: #2d2c2c;
+            /* Cor do "polegar" (parte que se move) */
+            border-radius: 10px;
+        }
+
+        .popup::-webkit-scrollbar-thumb:hover {
+            background: #262626;
+            /* Cor do "polegar" ao passar o mouse */
+        }
+
+        .popup {
+            overflow-y: scroll;
+            /* Mantém a barra sempre visível */
+        }
+
+        .popup-spotify {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgb(0, 0, 0);
+            color: rgb(101, 101, 101);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0px 4px 10px rgb(0, 0, 0);
+            width: 80%;
+            max-width: 400px;
+            z-index: 1001;
+            text-align: center;
+        }
+
+        .popup-spotify .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .popup-spotify select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background: #000000;
+            color: rgb(77, 76, 76);
+            border: none;
+            font-size: 16px;
+        }
+
+        #botton-spotify {
+            background-color: #000000;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 20px;
+            margin-right: 60px;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+            /* Transição suave */
+        }
+
+
+        /* Card de informações */
+        .card {
+            position: fixed;
+            /* Fixa o card na tela */
+            top: 50%;
+            /* Centraliza na tela */
+            left: 60%;
+            /* Centraliza na tela */
+            transform: translate(-50%, -50%);
+            /* Ajusta para o centro */
+            /*background: rgb(0, 0, 0);*/
+            background: linear-gradient(120deg, rgb(17, 17, 17), rgb(0, 0, 0), rgb(5, 5, 5), rgb(0, 0, 0));
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0px 4px 10px rgb(0, 0, 0);
+            display: none;
+            /* Começa invisível */
+            z-index: 1000;
+            width: 350px;
+            height: 500px;
+        }
+
+        .card img {
+            width: 250px;
+            height: 300px;
+            border-radius: 20px;
+            margin-left: 5%;
+        }
+
+
+        .card p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #585454;
+        }
+
+        /* Mostrar pop-up quando ativo */
+        .popup.ativo {
+            display: block;
+
+        }
+
+        .spotify {
+            margin-left: 50px;
+            padding: 20px;
+            margin-bottom: 50px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- Menu Hamburger -->
+    <div class="hamburger-menu">
+        <div class="hamburger-icon" onclick="toggleSideMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+    <!-- Menu Lateral -->
+    <div class="side-menu" id="sideMenu">
+        <div class="close-btn" onclick="toggleSideMenu()">×</div>
+        <ul>
+            <li><a href="#Inicio" class="menu-link">Início</a></li>
+            <li><a href="#Sobre mim" class="menu-link">Sobre mim</a></li>
+            <li><a href="#Sobre-a-aula" class="menu-link"> Aulas</a></li>
+            <li><a href="#" onclick="toggleMapPopup(); return false;">Localização</a></li>
+        </ul>
+
+
+
+
+        <div class="menu-buttons">
+            <button onclick="togglePopup()">Minhas Redes</button>
+            <button id="botton-spotify" onclick="toggleSpotifyPopup()">🎵 Spotify</button>
+        </div>
+    </div>
+
+    <!--menu-->
+    <nav class="menu">
+        <ul>
+            <li><a href="#Inicio"></a></li>
+            <li> <a href="#Sobre mim" class="menu-link">Sobre mim</a></li>
+            <li> <a href="#Sobre-a-aula" class="menu-link"> Aulas</a></li>
+            <li> <a href="#" onclick="toggleMapPopup(); return false;">Localização</a></li>
+        </ul>
+        <button onclick="togglePopup()">Minhas Redes</button>
+
+        <button id="botton-spotify" onclick="toggleSpotifyPopup()">🎵 Spotify</button> <!-- Botão do Spotify -->
+    </nav>
+
+    <!-- Pop-up do Spotify -->
+    <div id="spotifyPopup" class="popup-spotify">
+        <span class="close-btn" onclick="toggleSpotifyPopup()">✖</span>
+        <h2>Minha Playlist 🎶</h2>
+        <iframe id="spotifyFrame" src="https://open.spotify.com/embed/playlist/3BE2ETw1Q4rdduw3PUilom?utm_source=generator
+             " width="100%" height="352" frameBorder="0"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+        </iframe>
+
+        <select id="playlistSelector" onchange="changePlaylist()">
+            <option value="3BE2ETw1Q4rdduw3PUilom">Beatriz Gavelak </option>
+        </select>
+    </div>
+
+    <!-- Popup de Redes Sociais -->
+    <div id="popup" class="popup">
+        <!-- Seu conteúdo de redes sociais aqui -->
+        <div class="amigo" onmouseover="showCard(1)" onmouseout="hideCard(1)">
+            <img src="./img/instagram.png" alt="Amigo 1">
+            <a href="https://www.instagram.com/gavelak/" target="#">Instagram</a>
+            <div class="card" id="card1">
+
+            </div>
+        </div>
+        <!-- ...restante dos amigos... -->
+
+
+        <!--2-->
+
+        <div class="amigo" onmouseover="showCard(3)" onmouseout="hideCard(3)">
+            <img src="./img/facebook.png" alt="Amigo 3">
+            <a href="#" target="_blank">Facebook</a>
+            <div class="card" id="card3">
+
+            </div>
+        </div>
+
+        <!--3-->
+
+
+
+        <!--4-->
+        <div class="amigo" onmouseover="showCard(9)" onmouseout="hideCard(9)">
+            <img src="./img/tiktok (2).jpg" alt="Amigo 3">
+            <a href="#" target="_blank">Tiktok</a>
+            <div class="card" id="card9">
+
+            </div>
+        </div>
+
+        <!--5-->
+
+        <div class="amigo" onmouseover="showCard(18)" onmouseout="hideCard(18)">
+            <img src="./img/Threads app icon.jpg" alt="Amigo 3">
+            <a href="#" target="_blank">Threads</a>
+            <div class="card" id="card18">
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Pop-up do Mapa Google -->
+    <div id="mapPopup" class="popup-spotify">
+        <span class="close-btn" onclick="toggleMapPopup()">✖</span>
+        <h2 style="color: #ffff;">Localização</h2>
+        <p>Av. Infante Dom Henrique, 85 <br> - Parque do Flamengo, <br> Rio de Janeiro - RJ, 20021-140</p>
+        <br>
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3780.2627880771615!2d-43.171799299999996!3d-22.9137527!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9981d9360c2851%3A0xae30a9ecea6e885c!2sMuseu%20de%20Arte%20Moderna%20do%20Rio%20de%20Janeiro!5e1!3m2!1spt-BR!2sbr!4v1752326534552!5m2!1spt-BR!2sbr"
+            width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+
+
+
+
+    <div id="Inicio" class="container-1">
+        <div class="texto">
+
+            <div class="perfil">
+                <a href=""><img src="./img/amigo11.png" alt="Wilisses Sousa"> </a>
+                <h3>Aulas de skate Longboard</h3>
+            </div>
+
+            <br>
+            <p style="color: rgb(255, 255, 255);">
+            </p>
+
+            <div class="bottos-conatainer">
+
+                <button id="botton-chamada"><a href="https://contate.me/5521969809157">Agende sua Aula</a></button>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="linha-divisão" style="color: #ffffff;">
+        <h3>Aprenda os segredos para turbinar o seu rolê.</h3>
+    </div>
+
+
+    <div class=" oceano"></div>
+
+
+
+
+    <div class="linha-divisão2">
+        <h3 style="color: #ffffff;"> O começo do skate Longboard </h3>
+    </div>
+
+
+    <div id="#" class="container-post">
+        <div class="texto-post">
+            <h3 style="color: rgb(255, 255, 255);">Como funciona a aula na pratica?</h3>
+            <br>
+            <p>
+                Meu método de ensino foi elaborado para proporcionar uma experiência de aprendizado consciente e segura
+                no Skate Longboard.
+
+                Antes de subirmos no Long em movimento, adquirimos a dinâmica completa e a memória muscular necessária
+                para desfrutar do Longboard com consciência e confiança em nossa segurança pessoal.
+
+                Durante as aulas, concentramo-nos em três pilares que são fundamentais para dominar o Longboard:
+                Equilíbrio, Consciência Corporal e Quedas.
+
+            </p>
+        </div>
+
+        <picture class="foto-post-parallax-container">
+            <source srcset="./img/gavelak_rangtem_1_4x.webp" media="(min-width: 1920px)">
+            <source srcset="./img/gavelak_rangtem_1_3x.webp" media="(min-width: 1440px)">
+            <source srcset="./img/gavelak_rangtem_1_2x.webp" media="(min-width: 768px)">
+            <img src="./img/gavelak_rangtem_1_1x.webp" alt="Wilisses Sousa" class="foto-post-parallax">
+        </picture>
+    </div>
+
+
+
+
+
+    <!--divisão titulos-->
+
+    <div id="Sobre mim" class="linha-divisão">
+        <h3 style="color: #ffffff;"> Sobre mim </h3>
+    </div>
+
+
+    <!-- Nova seção de vídeo adaptativa -->
+    <div class="container-post-video">
+        <div class="video-arredondado">
+            <video id="video-publicacao" src="./img/Video-Aula-De-Long1.webm" autoplay loop muted playsinline></video>
+        </div>
+        <div class="texto-post-video">
+            <h2 style="color: #ffffff;"> Sobre mim </h2>
+            <p style="color: #746f6f;">
+                Me chamo <strong style="color: rgb(155, 154, 154);">Beatriz Gavelak</strong>, sou profissional da área
+                de saúde, com uma trajetória de mais de 10 anos no
+                ensino do Skate Longboard.
+
+                Me destaco como uma das pioneiras do Longboard Dancing no Brasil, tendo esta modalidade como minha
+                verdadeira expertise.
+
+                Minha paixão pelo Skate Longboard transcendeu o âmbito pessoal, conduzindo-me a projetos de destaque,
+                incluindo colaborações em programas de televisão. Além disso, tive a honra de contribuir com a
+                prefeitura do Rio de Janeiro e também de trabalhar com o cineasta mais influente no universo do skate.
+            </p>
+        </div>
+    </div>
+
+
+
+    <div id="Sobre-a-aula" class="linha-divisão2">
+        <h3 style="color: #ffffff;"> Aulas </h3>
+    </div>
+
+
+
+    <div id="#" class="container-post">
+
+        <div class="foto-post-parallax-container">
+            <div class="carousel-row">
+                <button class="carousel-arrow left" onclick="prevCarouselImg()">&#10094;</button>
+                <div class="carousel-img-wrapper">
+                    <img src="./img/carrosel_5_1_1x.webp" alt="Foto 1" class="carousel-img active">
+                    <img src="./img/carrosel_3_1_1x.webp" alt="Foto 2" class="carousel-img">
+                    <img src="./img/carrosel_4_1_1x.webp" alt="Foto 2" class="carousel-img">
+                    <img src="./img/carrosel_6_1_1x.webp" alt="Foto 3" class="carousel-img">
+                    <img src="./img/carrosel_7_1_1x.webp" alt="Foto 3" class="carousel-img">
+                    <img src="./img/carrosel_8_1_1x.webp" alt="Foto 3" class="carousel-img">
+                    <img src="./img/carrosel_9_1_1x.webp" alt="Foto 3" class="carousel-img">
+                    <img src="./img/carrosel_10_1_1x.webp" alt="Foto 3" class="carousel-img">
+                    <img src="./img/carrosel_11_1_1x.webp" alt="Foto 3" class="carousel-img">
+                    <img src="./img/carrosel_12_1_1x.webp" alt="Foto 3" class="carousel-img">
+                    <img src="./img/carrosel_13_1_1x.webp" alt="Foto 3" class="carousel-img">
+
+                    <img src="./img/carrosel_1_1_1x.webp" alt="Foto 3" class="carousel-img">
+                </div>
+                <button class="carousel-arrow right" onclick="nextCarouselImg()">&#10095;</button>
+            </div>
+            <div class="carousel-indicators"></div>
+        </div>
+
+
+
+        <div class="texto-post">
+            <h2 style="color: rgb(255, 255, 255);">O que você vai aprender?</h2>
+            <br>
+            <h3 style="color: #dfdddd;"></h3>
+            <p>
+            <ul>
+                <li>Aulas de Longboard do zero ao avançado.</li>
+                <br>
+                <li>Aulas de Longboard Dancing.</li>
+                <br>
+                <li>Aulas Exclusivas/Particulares.</li>
+                <br>
+                <li>Andar de longboard em menos de 2Hs.</li>
+                <br>
+                <li> Consciência corporal.</li>
+                <br>
+                <li> Entendimento e controle de equilíbrio.</li>
+                <br>
+                <li> Como evitar quedas e cair de forma consciênte.</li>
+                <br>
+                <li> Forneço Longboard e Equipamentos de proteção.</li>
+            </ul>
+            </p>
+
+            <h2 class="tarifa" style="color: #dfdddd;">Valores de investimento </h2>
+
+            <div class="sobre-a-aula">
+                <ul>
+                    <li>
+                        <h3>Preço Hora / aula:</h3>
+                        <P> R$ 100</P>
+                    </li>
+                    <br>
+                    <li>
+                        <h3>Preço pacotes: </h3>
+                        <P>5H: R$ 499,90</P>
+                        <P> 10H: R$ 999,90</P>
+                    </li>
+                </ul>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <div id="Sobre-a-aula" class="linha-divisão">
+        <h3 style="color: #ffffff;"> Feedbacks</h3>
+    </div>
+
+
+    <!-- Carrossel de Avaliações -->
+    <div class="avaliacoes-carousel-container">
+        <button class="avaliacoes-arrow left" onclick="prevAvaliacao()">&#10094;</button>
+        <div class="avaliacoes-carousel-wrapper">
+            <div class="avaliacoes-carousel">
+                <div class="avaliacao-card">
+                    <img src="./img/avalia1.png" alt="Aluno 1">
+                    <h4>Maria</h4>
+                    <p>Adorei a aula! Muito didática e divertida.</p>
+                </div>
+                <div class="avaliacao-card">
+                    <img src="./img/avalia2.png" alt="Aluno 2">
+                    <h4>João</h4>
+                    <p>Aprendi a andar de longboard em poucas horas!</p>
+                </div>
+                <div class="avaliacao-card">
+                    <img src="./img/avalia3.png" alt="Aluno 3">
+                    <h4>Ana</h4>
+                    <p>Excelente professora, recomendo para todos!</p>
+                </div>
+                <div class="avaliacao-card">
+                    <img src="./img/avalia4.png" alt="Aluno 4">
+                    <h4>Carlos</h4>
+                    <p>Ambiente seguro e acolhedor. Nota 10!</p>
+                </div>
+                <div class="avaliacao-card">
+                    <img src="./img/avalia5.png" alt="Aluno 5">
+                    <h4>Fernanda</h4>
+                    <p>Superou minhas expectativas, amei!</p>
+                </div>
+                <!-- Adicione mais cards se quiser -->
+            </div>
+        </div>
+        <button class="avaliacoes-arrow right" onclick="nextAvaliacao()">&#10095;</button>
+    </div>
+
+
+
+    <div class="linha-divisão2">
+        <h3 style="color: #ffffff;">Venha viver Essa Experiência!</h3>
+
+    </div>
+
+
+
+    <!-- Formulário de Contato -->
+    <div class="formulario-container">
+        <h2> Agende sua Aula
+
+        </h2>
+        <form action="https://formspree.io/f/xrbkwpgr" method="post" id="contato-form">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required>
+
+            <label for="email">E-mail:</label>
+            <input type="email" id="email" name="email" required>
+
+
+            <label for="mensagem">Mensagem:</label>
+            <textarea id="mensagem" name="mensagem" rows="4" required></textarea>
+
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+
+
+    <!--menu footer-->
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-branding">
+                <img src="./img/skate.png" alt="Logo Beatriz Gavelak">
+                <p>&copy; 2025 Beatriz Gavelak. Todos os direitos reservados.</p>
+            </div>
+
+            <div class="footer-links">
+                <h4>Menu</h4>
+                <ul>
+                    <li><a href="#Inicio">Início</a></li>
+                    <li><a href="#Sobre mim">Sobre mim</a></li>
+                    <li><a href="#Sobre-a-aula">Sobre a aula</a></li>
+                    <li><a href="#" onclick="toggleMapPopup(); return false;">Localização</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-social">
+                <h4>Redes Sociais</h4>
+                <ul>
+                    <li><a href="https://www.instagram.com/gavelak" target="_blank">Instagram</a></li>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">TikTok</a></li>
+                    <li><a href="#">Threads</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+
+
+
+    <!--Javascrpt-->
+
+    <script src="script.js"></script>
+
+    <script>
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+    </script>
+
+    <!--popup-->
+
+    <!-- Script para gerenciar popups -->
+    <script src="popup.js"></script>
+
+
+
+
+
+
+    <!-- Scripts já incluídos no popup.js -->
+
+    <script src="https://cdn.jsdelivr.net/npm/simple-parallax-js@5.6.2/dist/simpleParallax.min.js"></script>
+
+
+    // renderOceanoMedia
+
+    <script>
+        let lastIsMobile = null;
+        function renderOceanoMedia() {
+            var oceano = document.querySelector('.oceano');
+            if (!oceano) return;
+            var isMobile = window.innerWidth <= 1024;
+            if (isMobile === lastIsMobile) return; // Só atualiza se mudou de modo
+            lastIsMobile = isMobile;
+            oceano.innerHTML = '';
+            if (isMobile) {
+                var video = document.createElement('video');
+                video.className = 'parallax-img';
+                video.src = './img/video-aula-de-long2.webm';
+                video.autoplay = true;
+                video.loop = true;
+                video.muted = true;
+                video.playsInline = true;
+                video.style.width = '100vw';
+                video.style.height = '100%';
+                oceano.appendChild(video);
+            } else {
+                var img = document.createElement('img');
+                img.className = 'parallax-img';
+                img.src = './img/fundo.jpg';
+                img.alt = 'Fundo Oceano';
+                img.style.width = '100vw';
+                img.style.height = '100%';
+                oceano.appendChild(img);
+                if (window.simpleParallax) {
+                    new simpleParallax(img, {
+                        scale: 1.3,
+                        delay: .6,
+                        transition: 'cubic-bezier(0,0,0,1)'
+                    });
+                }
+            }
+        }
+        renderOceanoMedia();
+        window.addEventListener('resize', renderOceanoMedia);
+    </script>
+
+
+    //parallax-post1
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Só ativa o parallax no mobile
+            if (window.innerWidth <= 480 && window.simpleParallax) {
+                var img = document.querySelector('.foto-post-parallax');
+                if (img) {
+                    new simpleParallax(img, {
+                        scale: 1.3,
+                        delay: .6,
+                        transition: 'cubic-bezier(0,0,0,1)'
+                    });
+                }
+            }
+        });
+    </script>
+
+
+
+    // botão whatsapp
+
+    <script>
+        var url = 'https://cdn.waplus.io/waplus-crm/settings/ossembed.js';
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = url;
+        var options = {
+            "enabled": true,
+            "chatButtonSetting": {
+                "backgroundColor": "#b9dfc4",
+                "ctaText": "Beatriz Gavelak",
+                "borderRadius": "8",
+                "marginLeft": "20",
+                "marginBottom": "20",
+                "marginRight": "20",
+                "position": "right",
+                "textColor": "#ffffff",
+                "phoneNumber": "+5521969809157",
+                "messageText": "\"Quero agendar minha aula!\"",
+                "trackClick": true
+            }
+        }
+        s.onload = function () {
+            CreateWhatsappBtn(options);
+        };
+        var x = document.getElementsByTagName('script')[0];
+        x.parentNode.insertBefore(s, x);
+    </script>
+
+    <script>
+        // Corrige o scroll para o topo após o WhatsApp carregar
+        setTimeout(function () {
+            window.scrollTo(0, 0);
+        }, 800); // 800ms após o carregamento do WhatsApp
+    </script>
+
+
+    //carrosel bolinhas
+
+    <script>
+        let carouselIndex = 0;
+        const carouselImgs = document.querySelectorAll('.carousel-img');
+        const indicatorsContainer = document.querySelector('.carousel-indicators');
+
+        function renderIndicators() {
+            if (!indicatorsContainer) return;
+            indicatorsContainer.innerHTML = '';
+            carouselImgs.forEach((img, i) => {
+                const dot = document.createElement('span');
+                dot.className = 'carousel-indicator-dot' + (i === carouselIndex ? ' active' : '');
+                dot.onclick = () => {
+                    carouselIndex = i;
+                    showCarouselImg(carouselIndex);
+                };
+                indicatorsContainer.appendChild(dot);
+            });
+        }
+
+        function showCarouselImg(idx) {
+            carouselImgs.forEach((img, i) => {
+                img.classList.toggle('active', i === idx);
+            });
+            renderIndicators();
+        }
+
+        function prevCarouselImg() {
+            carouselIndex = (carouselIndex - 1 + carouselImgs.length) % carouselImgs.length;
+            showCarouselImg(carouselIndex);
+        }
+
+        function nextCarouselImg() {
+            carouselIndex = (carouselIndex + 1) % carouselImgs.length;
+            showCarouselImg(carouselIndex);
+        }
+
+        // Inicializa mostrando a primeira imagem e os indicadores
+        showCarouselImg(carouselIndex);
+    </script>
+
+
+    // avalição
+
+
+    <script>
+        let avaliacaoIndex = 0;
+
+        function getCardsPerView() {
+            if (window.innerWidth <= 900) return 1;
+            if (window.innerWidth <= 1200) return 2;
+            return 4;
+        }
+
+        function updateAvaliacaoCarousel() {
+            const carousel = document.querySelector('.avaliacoes-carousel');
+            const cardsPerView = getCardsPerView();
+            const cardWidth = carousel.querySelector('.avaliacao-card').offsetWidth + 18; // 18px gap
+            carousel.style.transform = `translateX(-${avaliacaoIndex * cardWidth}px)`;
+        }
+
+        function prevAvaliacao() {
+            const carousel = document.querySelector('.avaliacoes-carousel');
+            const totalCards = carousel.children.length;
+            const cardsPerView = getCardsPerView();
+            avaliacaoIndex = Math.max(0, avaliacaoIndex - 1);
+            updateAvaliacaoCarousel();
+        }
+
+        function nextAvaliacao() {
+            const carousel = document.querySelector('.avaliacoes-carousel');
+            const totalCards = carousel.children.length;
+            const cardsPerView = getCardsPerView();
+            if (avaliacaoIndex < totalCards - cardsPerView) {
+                avaliacaoIndex++;
+                updateAvaliacaoCarousel();
+            }
+        }
+
+        window.addEventListener('resize', function () {
+            avaliacaoIndex = 0;
+            updateAvaliacaoCarousel();
+        });
+
+        document.addEventListener('DOMContentLoaded', updateAvaliacaoCarousel);
+    </script>
+
+
+    //para fazer o menu fecha ao clica nos links
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            function toggleSideMenu() {
+                const menu = document.getElementById('sideMenu');
+                menu.classList.toggle('ativo');
+            }
+            window.toggleSideMenu = toggleSideMenu; // deixa global para o onclick funcionar
+
+            // Fecha o menu ao clicar em qualquer link
+            document.querySelectorAll('.side-menu .menu-link').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    document.getElementById('sideMenu').classList.remove('ativo');
+                    // Scroll suave para a seção
+                    const targetId = this.getAttribute('href').replace('#', '');
+                    const target = document.getElementById(targetId);
+                    if (target) {
+                        e.preventDefault();
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        });
+    </script>
+
+
+</body>
+
+</html>
